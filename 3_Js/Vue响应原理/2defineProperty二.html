@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 实现对一个对象所有成员的代理
+    // 普通数据源
+    var data = {
+        name: 'kindeng',
+        user: {
+            age: 18,
+            foo: 'bar',
+            pice: {
+                new: 399,
+                old: 199,
+            }
+        },
+        count: 0
+    };
+    // 对 data 中所有数据成员进行数据劫持（观察）
+    observe(data);
+    function observe(data) {
+        if (!data || typeof data !== 'object') {
+            return;
+        }
+        // 取出所有属性遍历，对属性成员进行代理（拦截、观察）操作
+        Object.keys(data).forEach(function (key) {
+            defineReactive(data, key, data[key]);
+        });
+    };
+    /**
+    * data 是数据对象
+    * key 是属性名
+    * val 当前属性名对应的值
+    */
+    function defineReactive(data, key, val) {
+        observe(val); // 监听子属性
+        console.log(key)
+        Object.defineProperty(data, key, {
+            enumerable: true, // 可枚举
+            configurable: false, // 不能再define
+            get: function () {
+                return val;
+            },
+            set: function (newVal) {
+                console.log('哈哈哈，监听到值变化了 ', val, ' --> ', newVal);
+                val = newVal;
+            }
+        });
+    }
+</script>
+
+</html>

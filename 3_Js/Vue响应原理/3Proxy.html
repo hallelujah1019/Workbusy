@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1></h1>
+    <h2></h2>
+    <input type="text">
+    <div>点击修改</div>   
+</body>
+<script>
+    var data = {}
+    const h1 = document.querySelector('h1')
+    const h2 = document.querySelector('h2')
+    const div = document.querySelector('div')
+    const input = document.querySelector('input')
+    input.oninput = function (e) {
+        data.message = e.target.value
+    },
+    div.addEventListener('click', function () {
+        h2.innerHTML = data.message
+        data.message = 'ABCDEFG'
+    })
+</script>
+</html>

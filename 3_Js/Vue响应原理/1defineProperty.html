@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefineProperty</title>
+</head>
+
+<body>
+    <h1></h1>
+    <h2></h2>
+    <input type="text">
+    <div>点击修改</div>
+</body>
+<script>
+    var data = {}
+    const h1 = document.querySelector('h1')
+    const h2 = document.querySelector('h2')
+    const div = document.querySelector('div')
+    const input = document.querySelector('input')
+    Property(data , 'message' , 'Hello world')
+    input.oninput = function (e) {
+        data.message = e.target.value
+    },
+    div.addEventListener('click', function () {
+        h2.innerHTML = data.message
+        data.message = 'ABCDEFG'
+    })
+
+    function Property(obj, key, value) {
+        Object.defineProperty(obj, key, {
+
+            get() {
+                console.log('数据被访问了');
+                return value;
+                // return 'Hello world'; 通过这种方式定义的数据成员无法存储数据
+            },
+            set(val) {
+                console.log('数据被赋值了', '新数据为', val);
+                value = val
+                h1.innerHTML = val
+            }
+        })
+    }
+
+</script>
+
+</html>
