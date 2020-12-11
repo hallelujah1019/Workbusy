@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1></h1>
+    <h2></h2>
+    <input type="text">
+    <div>点击修改</div>
+</body>
+<script>
+    const data = {
+        a: 1,
+        b: 2,
+        c: {
+            d: 3,
+            e: 4,
+            f: {
+                g: 5,
+                h: 6
+            }
+        },
+        todos: [
+            { id: 1, title: '吃饭' },
+            { id: 2, title: '睡觉' },
+            { id: 3, title: '打豆豆' }
+        ]
+    }
+    let proxyData = observe(data)
+    function observe(data) {
+        if (!data || typeof data !== 'object') {
+            return
+        }
+        const p = new Proxy(data, {
+            get(target, property) {
+                console.log(`${property} 被访问了`)
+                return target[property]
+            },
+            set(target, property, value) {
+                console.log(`${property} 被修改了`)
+                target[property] = observe(value) || value
+            }
+        })
+        for (let key in data) {
+            const item = data[key]
+            if (typeof item === 'object') { // 对象或数组
+                data[key] = observe(item)
+            }
+        }
+        return p
+    }
+</script>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // {
+    //   a: [
+    //     () => {},
+    //     () => {}
+    //   ],
+    //   b: [
+    //     () => {}
+    //   ],
+    //   c: [
+    //     () => {}
+    //   ]
+    // }
+    function EventEmitter () {
+      this.handlers = {}
+    }
+
+    // var obj = {}
+    // var a = 'abc'
+
+    // obj.a 访问名字叫 a 的成员
+    // obj['a'] 属性a
+    // obj[a] 变量 a
+    // obj['a'] [] 中的是 JavaScript 表达式，访问的是 [] 里面运算出来的结果
+    // obj['a' + 'b']
+
+    EventEmitter.prototype.on = function (eventName, callback) {
+      let arr = this.handlers[eventName]
+
+      if (!arr) {
+        this.handlers[eventName] = []
+        this.handlers[eventName].push(callback)
+      } else {
+        arr.push(callback)
+      }
+    }
+
+    // 参数1：事件类型
+    // 参数2：所有的剩余参数
+    // 函数参数中使用的 ...args 称作 REST 参数
+    // args 是随便起的一个名字
+    // 它会把从第2个参数开始的所有后续参数收集到一个数组中
+    // 如果没有第2个参数，那它也是一个空数组
+    EventEmitter.prototype.emit = function (eventName, ...args) {
+      const arr = this.handlers[eventName]
+      if (arr) {
+        arr.forEach(callback => {
+          // 放到函数调用中的 ...数组，它的作用是展开数组
+          // 所谓的展开就是把数组元素一个一个拿出来，传递给调用的函数
+          // args[0], args[1], args[2]
+          callback(...args)
+        })
+      }
+    }
+
+    const bus = new EventEmitter()
+
+    // 按照不同的事件类型存储所有的处理函数
+    // 同类型的事件可以被订阅多次
+    // {
+    //   a: [
+    //     () => {},
+    //     () => {}
+    //   ],
+    //   b: [
+    //     () => {}
+    //   ],
+    //   c: [
+    //     () => {}
+    //   ]
+    // }
+
+    // 订阅
+    // 参数1：事件类型
+    // 参数2：处理函数
+    bus.on('a', () => {
+      console.log('a1')
+    })
+
+    bus.on('a', () => {
+      console.log('a2')
+    })
+
+    bus.on('b', () => {
+      console.log('b')
+    })
+
+    bus.on('c', (count1, count2) => {
+      console.log('c', count1, count2)
+    })
+
+    // 发布
+    // 参数1：事件类型
+    // 参数2：可选参数
+    // bus.emit('a')
+    // bus.emit('b')
+    bus.emit('c', 123, 456)
+
+    
+  </script>
+</body>
+</html>

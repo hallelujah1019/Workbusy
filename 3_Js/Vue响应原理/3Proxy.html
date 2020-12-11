@@ -12,7 +12,15 @@
     <div>点击修改</div>   
 </body>
 <script>
-    var data = {}
+    var data = {
+        name:'测试',
+        user:{
+            one:'A',
+            tow:'B'
+        },
+        age:'18',
+        num:99
+    }
     const h1 = document.querySelector('h1')
     const h2 = document.querySelector('h2')
     const div = document.querySelector('div')
@@ -24,5 +32,29 @@
         h2.innerHTML = data.message
         data.message = 'ABCDEFG'
     })
+    /*
+        new Proxy 会返回一个代理对象 （代理的是所有数据不是某一个）
+        注意：要使得 Proxy 起作用，必须针对 Proxy 实例（上例是 proxy 对象）进行操作，而不是针对
+        目标对象（上例是data）进行操作。
+    */
+    const proxy = new Proxy(data , {
+        /*
+            target 被代理的目标对象
+            property 访问目标对象的属性名
+        */
+        get(target , property) {
+            console.log('被调用了');
+            return target[property]
+        },
+        /*
+            target 被代理的目标对象
+            property 访问目标对象的属性名
+            value 要修改的值
+        */
+        set(target , property , value) {
+            console.log('被修改了');
+            target[property] = value 
+        }
+    })  
 </script>
 </html>
