@@ -9,10 +9,14 @@
     
 </body>
 <script>
-    var b = undefined
-    var c = 1
-    var a = b || c
-    console.log(a);
-
+    var obj1 = {
+        A:1
+    }
+    var obj2 = {
+        A:1
+    }
+    var obj3 = obj1
+    console.log( obj1 == obj2 );
+    console.log( obj1 == obj3 );
 </script>
 </html>
